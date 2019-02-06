@@ -1,3 +1,4 @@
 .gitignore
 app/outTS/*
 node_modules
+app/bundle.js
