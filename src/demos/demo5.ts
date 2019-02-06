@@ -216,6 +216,12 @@ export class demo5 implements IDemo {
                 this.cubeRotation * .7,   // amount to rotate in radians
                 [0, 1, 0]);       // axis to rotate around
 
+    // x axis rotation
+    mat4.rotate(modelViewMatrix,  // destination matrix
+                modelViewMatrix,  // matrix to rotate
+                this.cubeRotation * .3,   // amount to rotate in radians
+                [1, 0, 0]);       // axis to rotate around
+
     // Tell WebGL which indices to use to index the vertices
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, buffers.indices);
 
