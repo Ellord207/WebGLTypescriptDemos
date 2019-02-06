@@ -11,9 +11,13 @@
   "license": "ISC",
   "dependencies": {
     "@types/gl-matrix": "^2.4.5",
+    "cors": "^2.8.5",
+    "express": "^4.16.4",
     "lodash": "^4.17.5"
   },
   "devDependencies": {
+    "@types/cors": "^2.8.4",
+    "@types/express": "^4.16.1",
     "gl-matrix": "^3.0.0",
     "ts-loader": "^5.3.3",
     "typescript": "^3.2.4",
