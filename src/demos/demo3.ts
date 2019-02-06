@@ -1,9 +1,10 @@
 import { WebGlHelper } from "../WebGlHelper";
 import { mat4 } from "gl-matrix";
+import { IDemo } from "./demo.interface";
 
 
-export module demo3 {
-  const vsSource = `
+export class demo3 implements IDemo {
+  private vsSource = `
     attribute vec4 aVertexPosition;
     attribute vec4 aVertexColor;
 
@@ -18,7 +19,7 @@ export module demo3 {
     }
   `;
 
-  const fsSource = `
+  private fsSource = `
     varying lowp vec4 vColor;
 
     void main(void) {
@@ -26,9 +27,9 @@ export module demo3 {
     }
   `;
 
-  export function demo3(webGl: WebGlHelper): () => void {
+  public demo(webGl: WebGlHelper): () => void {
     const gl = webGl.gl;
-    const shaderProgramInfo = webGl.initShaderProgram(vsSource, fsSource);
+    const shaderProgramInfo = webGl.initShaderProgram(this.vsSource, this.fsSource);
     const shaderProgram = shaderProgramInfo['program'];
     shaderProgramInfo['attribLocations'] = {
       vertexPosition: gl.getAttribLocation(shaderProgram, 'aVertexPosition'),
@@ -38,13 +39,13 @@ export module demo3 {
       projectionMatrix: gl.getUniformLocation(shaderProgram, 'uProjectionMatrix'),
       modelViewMatrix: gl.getUniformLocation(shaderProgram, 'uModelViewMatrix'),
     };
-    const buffer: any = initBuffers(gl);
+    const buffer: any = this.initBuffers(gl);
     return () => {
-        drawScene(gl, shaderProgramInfo, buffer);
+        this.drawScene(gl, shaderProgramInfo, buffer);
     };
   }
 
-  function initBuffers(gl: any): any {
+  private initBuffers(gl: any): any {
     // Create a buffer for the square's positions.
     const positionBuffer = gl.createBuffer();
   
@@ -84,7 +85,7 @@ export module demo3 {
     };
   }
 
-  function drawScene(gl: any, programInfo: any, buffers: any): void {
+  private drawScene(gl: any, programInfo: any, buffers: any): void {
     gl.clearColor(0.0, 0.0, 0.0, 1.0);  // Clear to black, fully opaque
     gl.clearDepth(1.0);                 // Clear everything
     gl.enable(gl.DEPTH_TEST);           // Enable depth testing

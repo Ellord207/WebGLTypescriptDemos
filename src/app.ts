@@ -1,6 +1,8 @@
 import { WebGlHelper } from './WebGlHelper';
 import { demo2 } from './demos/demo2'
 import { demo3 } from './demos/demo3';
+import { demo4 } from './demos/demo4';
+import { IDemo } from './demos/demo.interface';
 
 module Startup {
   let webGl: WebGlHelper;
@@ -32,8 +34,10 @@ module Startup {
   }
 
   function initButtons(): void {
-    const fnDemo2: () => void = demo2.demo2(webGl);
-    const fnDemo3: () => void = demo3.demo3(webGl);
+    const demos: (() => void)[] = [];
+    demos.push(new demo2().demo(webGl));
+    demos.push(new demo3().demo(webGl));
+    demos.push(new demo4().demo(webGl));
 
     initButton('#clear_button', function() {
       if (webGl !== undefined) {
@@ -42,12 +46,17 @@ module Startup {
     });
     initButton('#demo2_button', function() {
       if (webGl !== undefined) {
-        fnDemo2();
+        demos[0]();
       }
     });
     initButton('#demo3_button', function() {
       if (webGl !== undefined) {
-        fnDemo3();
+        demos[1]();
+      }
+    });
+    initButton('#demo4_button', function() {
+      if (webGl !== undefined) {
+        demos[2]();
       }
     });
   }
