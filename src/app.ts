@@ -3,6 +3,7 @@ import { demo2 } from './demos/demo2'
 import { demo3 } from './demos/demo3';
 import { demo4 } from './demos/demo4';
 import { IDemo } from './demos/demo.interface';
+import { demo5 } from './demos/demo5';
 
 module Startup {
   let webGl: WebGlHelper;
@@ -38,6 +39,7 @@ module Startup {
     demos.push(new demo2().demo(webGl));
     demos.push(new demo3().demo(webGl));
     demos.push(new demo4().demo(webGl));
+    demos.push(new demo5().demo(webGl));
 
     initButton('#Demo', function() {
       if (webGl !== undefined) {
