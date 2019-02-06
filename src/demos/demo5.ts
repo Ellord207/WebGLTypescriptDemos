@@ -6,7 +6,7 @@ import { IDemo } from "./demo.interface";
 export class demo5 implements IDemo {
   //
   // Demo from 
-  // https://developer.mozilla.org/en-US/docs/Web/API/WebGL_API/Tutorial/Animating_objects_with_WebGL
+  // https://developer.mozilla.org/en-US/docs/Web/API/WebGL_API/Tutorial/Creating_3D_objects_using_WebGL
   // 
   private cubeRotation = 0.0;
   private then = 0;
