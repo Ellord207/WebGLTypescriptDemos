@@ -39,24 +39,10 @@ module Startup {
     demos.push(new demo3().demo(webGl));
     demos.push(new demo4().demo(webGl));
 
-    initButton('#clear_button', function() {
+    initButton('#Demo', function() {
       if (webGl !== undefined) {
-        webGl.clearCanvas();
-      }
-    });
-    initButton('#demo2_button', function() {
-      if (webGl !== undefined) {
-        demos[0]();
-      }
-    });
-    initButton('#demo3_button', function() {
-      if (webGl !== undefined) {
-        demos[1]();
-      }
-    });
-    initButton('#demo4_button', function() {
-      if (webGl !== undefined) {
-        demos[2]();
+        const fn = demos.pop();
+        if(fn) fn();
       }
     });
   }

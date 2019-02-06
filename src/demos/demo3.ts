@@ -4,6 +4,10 @@ import { IDemo } from "./demo.interface";
 
 
 export class demo3 implements IDemo {
+  //
+  // Demo from 
+  // https://developer.mozilla.org/en-US/docs/Web/API/WebGL_API/Tutorial/Using_shaders_to_apply_color_in_WebGL
+  // 
   private vsSource = `
     attribute vec4 aVertexPosition;
     attribute vec4 aVertexColor;
