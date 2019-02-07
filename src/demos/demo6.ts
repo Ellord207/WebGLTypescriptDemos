@@ -63,7 +63,7 @@ export class demo6 implements IDemo {
       modelViewMatrix: gl.getUniformLocation(shaderProgram, 'uModelViewMatrix'),
       uSampler: gl.getUniformLocation(shaderProgram, 'uSampler'),
     };
-    const buffer: any = this.initBuffers(gl);
+    const buffers: any = this.initBuffers(gl);
     const texturePath_web = "https://webglfundamentals.org/webgl/resources/f-texture.png";
     const texture = this.loadTexture(gl, texturePath_web);
 
@@ -73,7 +73,7 @@ export class demo6 implements IDemo {
         now *= 0.001;
         deltaTime = now - this.then;
         this.then = now;
-        this.drawScene(gl, shaderProgramInfo, buffer, deltaTime);
+        this.drawScene(gl, shaderProgramInfo, buffers, texture, deltaTime);
         requestAnimationFrame(render);
       };
       requestAnimationFrame(render);
@@ -255,7 +255,7 @@ export class demo6 implements IDemo {
     };
   }
 
-  private drawScene(gl: any, programInfo: any, buffers: any, deltaTime: number): void {
+  private drawScene(gl: any, programInfo: any, buffers: any, texture: any, deltaTime: number): void {
     gl.clearColor(0.0, 0.0, 0.0, 1.0);  // Clear to black, fully opaque
     gl.clearDepth(1.0);                 // Clear everything
     gl.enable(gl.DEPTH_TEST);           // Enable depth testing
@@ -354,6 +354,15 @@ export class demo6 implements IDemo {
       programInfo.uniformLocations.modelViewMatrix,
       false,
       modelViewMatrix);
+
+    // Tell WebGL we want to affect texture unit 0
+    gl.activeTexture(gl.TEXTURE0);
+
+    // Bind the texture to texture unit 0
+    gl.bindTexture(gl.TEXTURE_2D, texture);
+
+    // Tell the shader we bound the texture to texture unit 0
+    gl.uniform1i(programInfo.uniformLocations.uSampler, 0);
 
     {
       const vertexCount = 36;
