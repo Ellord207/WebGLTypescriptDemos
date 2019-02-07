@@ -62,7 +62,7 @@ module Startup {
       if (webGl !== undefined) {
         // const fn = demos.pop();
         // if(fn) fn();
-        demos[3]();
+        demos[4]();
       }
     });
   }

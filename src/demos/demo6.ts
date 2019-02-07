@@ -2,7 +2,6 @@ import { WebGlHelper } from "../WebGlHelper";
 import { mat4 } from "gl-matrix";
 import { IDemo } from "./demo.interface";
 
-
 export class demo6 implements IDemo {
   //
   // Demo from 
@@ -12,26 +11,40 @@ export class demo6 implements IDemo {
   private then = 0;
   private vsSource = `
     attribute vec4 aVertexPosition;
-    attribute vec4 aVertexColor;
+    attribute vec2 aTextureCoord;
 
     uniform mat4 uModelViewMatrix;
     uniform mat4 uProjectionMatrix;
 
-    varying lowp vec4 vColor;
+    varying highp vec2 vTextureCoord;
 
     void main(void) {
       gl_Position = uProjectionMatrix * uModelViewMatrix * aVertexPosition;
-      vColor = aVertexColor;
+      vTextureCoord = aTextureCoord;
     }
   `;
 
   private fsSource = `
-    varying lowp vec4 vColor;
+  varying highp vec2 vTextureCoord;
 
-    void main(void) {
-      gl_FragColor = vColor;
+  uniform sampler2D uSampler;
+
+  void main(void) {
+    gl_FragColor = texture2D(uSampler, vTextureCoord);
+  }
+`;
+
+  // This is needed if the images are not on the same domain
+  // NOTE: The server providing the images must give CORS permissions
+  // in order to be able to use the image with WebGL. Most sites
+  // do NOT give permission.
+  // See: http://webglfundamentals.org/webgl/lessons/webgl-cors-permission.html
+  private static requestCORSIfNotSameOrigin(img: HTMLImageElement, url: string) {
+    if ((new URL(url)).origin !== window.location.origin) {
+      img.crossOrigin = "*";
     }
-  `;
+    console.log((new URL(url)).origin, window.location.origin, img.crossOrigin);
+  }
 
   private static isPowerOf2(value: number): boolean {
     return (value & (value - 1)) == 0;
@@ -43,14 +56,16 @@ export class demo6 implements IDemo {
     const shaderProgram = shaderProgramInfo['program'];
     shaderProgramInfo['attribLocations'] = {
       vertexPosition: gl.getAttribLocation(shaderProgram, 'aVertexPosition'),
-      vertexColor: gl.getAttribLocation(shaderProgram, 'aVertexColor'),
+      textureCoord: gl.getAttribLocation(shaderProgram, 'aTextureCoord'),
     };
     shaderProgramInfo['uniformLocations'] = {
       projectionMatrix: gl.getUniformLocation(shaderProgram, 'uProjectionMatrix'),
       modelViewMatrix: gl.getUniformLocation(shaderProgram, 'uModelViewMatrix'),
+      uSampler: gl.getUniformLocation(shaderProgram, 'uSampler'),
     };
     const buffer: any = this.initBuffers(gl);
-    const texture = this.loadTexture(gl, '../resources/cubetexture.png');
+    const texturePath_web = "https://webglfundamentals.org/webgl/resources/f-texture.png";
+    const texture = this.loadTexture(gl, texturePath_web);
 
     return () => {
       let deltaTime: number
@@ -113,6 +128,7 @@ export class demo6 implements IDemo {
          gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
       }
     };
+    demo6.requestCORSIfNotSameOrigin(image, url);
     image.src = url;
   
     return texture;
@@ -314,24 +330,16 @@ export class demo6 implements IDemo {
         programInfo.attribLocations.vertexPosition);
     }
 
-    // Tell WebGL how to pull out the colors from the color buffer
-    // into the vertexColor attribute.
+    // tell webgl how to pull out the texture coordinates from buffer
     {
-      const numComponents = 4;
-      const type = gl.FLOAT;
-      const normalize = false;
-      const stride = 0;
-      const offset = 0;
-      gl.bindBuffer(gl.ARRAY_BUFFER, buffers.color);
-      gl.vertexAttribPointer(
-          programInfo.attribLocations.vertexColor,
-          numComponents,
-          type,
-          normalize,
-          stride,
-          offset);
-      gl.enableVertexAttribArray(
-          programInfo.attribLocations.vertexColor);
+      const num = 2; // every coordinate composed of 2 values
+      const type = gl.FLOAT; // the data in the buffer is 32 bit float
+      const normalize = false; // don't normalize
+      const stride = 0; // how many bytes to get from one set to the next
+      const offset = 0; // how many bytes inside the buffer to start from
+      gl.bindBuffer(gl.ARRAY_BUFFER, buffers.textureCoord);
+      gl.vertexAttribPointer(programInfo.attribLocations.textureCoord, num, type, normalize, stride, offset);
+      gl.enableVertexAttribArray(programInfo.attribLocations.textureCoord);
     }
 
     // Tell WebGL to use our program when drawing
