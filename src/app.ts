@@ -13,17 +13,6 @@ module Startup {
       console.error('WebGlHelper is undefined.');
     }
 
-    // var app = Express();
-   
-    // app.get('/products/:id', cors(), function (req, res, next) {
-    //   res.json({msg: 'This is CORS-enabled for a Single Route'});
-    // });
-    // app.use(function(req, res, next) {
-    //   res.header("Access-Control-Allow-Origin", "*");
-    //   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-    //   next();
-    // });
-
     window.onload = bootstrap;
 
     return 0;
@@ -55,9 +44,8 @@ module Startup {
 
     initButton('#Demo', function() {
       if (webGl !== undefined) {
-        // const fn = demos.pop();
-        // if(fn) fn();
-        demos[4]();
+        const fn = demos.pop();
+        if(fn) fn();
       }
     });
   }
