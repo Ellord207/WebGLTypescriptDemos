@@ -25,14 +25,14 @@ export class demo6 implements IDemo {
   `;
 
   private fsSource = `
-  varying highp vec2 vTextureCoord;
+    varying highp vec2 vTextureCoord;
 
-  uniform sampler2D uSampler;
+    uniform sampler2D uSampler;
 
-  void main(void) {
-    gl_FragColor = texture2D(uSampler, vTextureCoord);
-  }
-`;
+    void main(void) {
+      gl_FragColor = texture2D(uSampler, vTextureCoord);
+    }
+  `;
 
   // This is needed if the images are not on the same domain
   // NOTE: The server providing the images must give CORS permissions
