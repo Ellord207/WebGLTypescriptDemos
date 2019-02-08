@@ -4,6 +4,7 @@ import { demo3 } from './demos/demo3';
 import { demo4 } from './demos/demo4';
 import { demo5 } from './demos/demo5';
 import { demo6 } from './demos/demo6';
+import { demo7 } from './demos/demo7';
 
 module Startup {
   let webGl: WebGlHelper;
@@ -41,6 +42,7 @@ module Startup {
     demos.push(new demo4().demo(webGl));
     demos.push(new demo5().demo(webGl));
     demos.push(new demo6().demo(webGl));
+    demos.push(new demo7().demo(webGl));
 
     initButton('#Demo', function() {
       if (webGl !== undefined) {
