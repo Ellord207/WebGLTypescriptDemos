@@ -1,9 +1,4 @@
 import { WebGlHelper } from './WebGlHelper';
-import { IDemo } from './demos/demo.interface';
-// import * as cors from 'cors';
-import { Express } from 'express';
-// import cors = require('cors');
-import  * as cors  from 'cors';
 import { demo2 } from './demos/demo2'
 import { demo3 } from './demos/demo3';
 import { demo4 } from './demos/demo4';
